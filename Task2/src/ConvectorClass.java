@@ -1,10 +1,14 @@
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+
+import static java.nio.file.Files.size;
 
 public class ConvectorClass {
     public static Animal mapToProductDto(Pet pet) throws NoSuchFieldException, IllegalAccessException {
         Animal animal = new Animal();
         Class p = pet.getClass();
         Class a = animal.getClass();
+
         Field name = p.getDeclaredField("name");
         Field nameA = a.getDeclaredField("title");
         name.setAccessible(true);
@@ -26,12 +30,14 @@ public class ConvectorClass {
             sold.set(animal, true);
         }
 
+        Field photoList = p.getDeclaredField("photoList");
+        photoList.setAccessible(true);
+        Field photosMap = a.getDeclaredField("photosMap");
+        photosMap.setAccessible(true);
+        /***int i =0;
+        while (photoList.get(pet)[i] ){
 
-
-
-
-        Field photo = p.getDeclaredField("photoList");
-        photo.setAccessible(true);
+        }***/
 
         return animal;
     }
