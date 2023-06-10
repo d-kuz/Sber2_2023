@@ -1,3 +1,4 @@
+package Task1;
 import java.time.LocalTime;
 
 public class TimeCommands implements Command{

@@ -1,3 +1,5 @@
+package Task1;
+
 public class HelpCommands implements Command{
     @Override
     public Boolean exec(String[] ar) {

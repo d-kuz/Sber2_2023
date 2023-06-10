@@ -1,3 +1,4 @@
+package Task1;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -21,9 +22,9 @@ public class Shell {
             System.out.print("Введите команду: ");
             String s = scanner.nextLine();
             String[] c = s.split(" ");
-            for (int i = 0; i < 5; i++) {
-                if (c[0].equals(com.get(i).getName())){
-                    next = com.get(i).exec(c);
+            for (Command command: com) {
+                if (c[0].equals(command)){
+                    next = command.exec(c);
                 }
             }
         }while (next);

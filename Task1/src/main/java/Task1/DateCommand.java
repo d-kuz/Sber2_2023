@@ -1,24 +1,25 @@
+package Task1;
 import java.time.LocalDate;
 
-public class QuitCommands implements Command{
+public class DateCommand implements Command{
 
     @Override
     public Boolean exec(String[] ar) {
         if (ar.length == 1) {
-            System.out.println("Завершение работы программы");
-            return false;
+            System.out.println(LocalDate.now());
         }else {
             help();
-            return true;
         }
+
+        return true;
     }
 
     @Override
     public String getName() {
-        return "quit";
+        return "date";
     }
 
     public void help() {
-        HelpCommands.quit();
+         HelpCommands.data();
     }
 }
