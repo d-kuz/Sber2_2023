@@ -1,4 +1,4 @@
-
+package Task2;
 import java.util.Map;
 
 public class Animal {

@@ -1,5 +1,9 @@
+package Task2;
+import java.util.HashMap;
+import java.util.List;
+
 import java.lang.reflect.Field;
-import java.util.ArrayList;
+import java.util.Map;
 
 import static java.nio.file.Files.size;
 
@@ -30,14 +34,17 @@ public class ConvectorClass {
             sold.set(animal, true);
         }
 
-        Field photoList = p.getDeclaredField("photoList");
-        photoList.setAccessible(true);
         Field photosMap = a.getDeclaredField("photosMap");
         photosMap.setAccessible(true);
-        /***int i =0;
-        while (photoList.get(pet)[i] ){
+        Map<String, String> map = new HashMap<>();
 
-        }***/
+        Field photos = Pet.class.getDeclaredField("photoList");
+        photos.setAccessible(true);
+        List<Photo> photoList = (List<Photo>) photos.get(pet);
+        for (Photo photo : photoList){
+            map.put(photo.getName(), photo.getURL());
+        }
+        photosMap.set(animal, map);
 
         return animal;
     }
