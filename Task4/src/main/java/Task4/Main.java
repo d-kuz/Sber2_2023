@@ -21,9 +21,11 @@ public class Main {
         HashMap<String,Integer> map =  context.getBean(HashMap.class);
         for (String key: map.keySet()) {
             if (!key.equals("0")) {
-                System.out.println(key + " = " + map.get(key)*100/ map.get("0") + "%");
+                double d =  (Double) map.get(key)*100/map.get("0");
+                System.out.println(String.format(key + " = %.2f ", d));
             }
         }
+        System.out.println(map.get("0"));
 
     }
 
