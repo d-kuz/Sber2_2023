@@ -14,57 +14,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 @Configuration
-@ComponentScan
 public class Main {
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
-        HashMap<String,Integer> map =  context.getBean(HashMap.class);
-        for (String key: map.keySet()) {
-            if (!key.equals("0")) {
-                double d =  (Double) map.get(key)*100/map.get("0");
-                System.out.println(String.format(key + " = %.2f ", d));
-            }
-        }
-        System.out.println(map.get("0"));
-
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(writer.class, reader.class, counter.class);
+        boolean bool =  context.getBean(boolean.class);
     }
 
-    @Bean("reader")
-    public char[] readFile() throws IOException {
-        String path = "C:\\Users\\Natik\\IdeaProjects\\SberPractice2_2023\\Task4\\src\\main\\java\\Task4\\Borodino.txt";
-        String a="";
-        if (path.length() > 0) {
-            try (BufferedReader fileInputStream = new BufferedReader(new FileReader(path))) {
-                String b = fileInputStream.readLine();
-                while (b != null) {
-                    a += b + " ";
-                    b = fileInputStream.readLine();
-                }
-            }
-        }
-        char[] chars= a.toCharArray();
-        return chars;
-    }
-    @Bean("counter")
-    public HashMap<String, Integer> count(char[] a){
-        HashMap<String, Integer> b = new HashMap<>();
-        b.put("0", 0);
-        String world = "";
-        for (char ch: a) {
-            if ((ch >= 'a') & (ch <= 'я') | (ch >= 'А') & (ch <= 'Я') |
-                    (ch == 'ё') | (ch == 'Ё') | (ch == '-')){
-                world +=ch;
-            }else if (world != ""){
-                if (b.get(world) == null){
-                    b.put(world, 1);
-                }else {
-                    b.put(world, b.get(world)+1);
-                }
-                world = "";
-                b.put("0", b.get("0")+1);
-            }
-        }
-        return b;
-    }
+
+
 
 }
