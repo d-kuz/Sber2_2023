@@ -1,22 +1,23 @@
 package Task4;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+
 import java.io.IOException;
 import java.util.HashMap;
-
+@Configuration
 public class counterWorlds implements Counter {
     @Autowired
     public Parser parser;
     @Autowired
     public Report report;
-    @Autowired
-    public Counter counter;
 
 
     @Override
     public void exec() throws IOException {
         parser.scan();
-        report.bildReport(counter.count());
+        HashMap<String, Double> map = count();
+        report.bildReport(map);
     }
 
     @Override
@@ -24,7 +25,7 @@ public class counterWorlds implements Counter {
         HashMap<String, Double> b = new HashMap<>();
         b.put("0", (double) 0);
         String world = "";
-        while (parser.hasNext){
+        while (parser.hasNext()){
             String s = parser.Next();
             int i = 0;
             while (i < s.length()) {

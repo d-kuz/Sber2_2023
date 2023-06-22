@@ -9,14 +9,10 @@ import java.io.IOException;
 @Configuration
 public class Main {
     @Autowired
-    public Counter counter;
+    public static Counter counter;
     public static void main(String[] args) throws IOException {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(appConfig.class);
-        context.getBean(Main.class).exec();
-    }
-
-    private void exec() throws IOException {
-        counter.exec();
+        context.getBean(appConfig.class).counter().exec();
     }
 
 

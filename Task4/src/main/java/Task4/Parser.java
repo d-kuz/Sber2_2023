@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public interface Parser {
 
-    boolean hasNext = true;
+    boolean hasNext();
     void scan() throws IOException;
     String Next();
 }
