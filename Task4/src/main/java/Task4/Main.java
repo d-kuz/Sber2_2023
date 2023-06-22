@@ -9,7 +9,7 @@ import java.io.IOException;
 @Configuration
 public class Main {
     @Autowired
-    public static Counter counter;
+    public Counter counter;
     public static void main(String[] args) throws IOException {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(appConfig.class);
         context.getBean(Main.class).exec();
