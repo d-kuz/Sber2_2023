@@ -27,13 +27,14 @@ public class counterWorlds implements Counter {
         String world = "";
         while (parser.hasNext()){
             String s = parser.Next();
+            System.out.println(s);
             int i = 0;
             while (i < s.length()) {
                 char ch = s.charAt(i);
                 if ((ch >= 'a') & (ch <= 'я') | (ch >= 'А') & (ch <= 'Я') |
                         (ch == 'ё') | (ch == 'Ё') | (ch == '-')) {
                     world += ch;
-                }else if (world.length() > 0){
+                }else if (world != ""){
                     if (b.get(world) == null) {
                         b.put(world, 1.0);
                     } else {
@@ -44,6 +45,7 @@ public class counterWorlds implements Counter {
                 }
                 i++;
             }
+            world = "";
         }
         return b;
     }

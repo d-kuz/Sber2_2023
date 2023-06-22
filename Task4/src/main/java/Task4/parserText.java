@@ -28,9 +28,10 @@ public class parserText implements Parser{
         if (scanner.hasNextLine()) {
             s = scanner.nextLine();
             String[] arr = s.split(" ");
+            return s;
         } else {
             hasNext = false;
+            return "";
         }
-        return s;
     }
 }
