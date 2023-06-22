@@ -12,7 +12,11 @@ public class Main {
     public static Counter counter;
     public static void main(String[] args) throws IOException {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(appConfig.class);
-        context.getBean(counter.class).exec();
+        context.getBean(Main.class).exec();
+    }
+
+    private void exec() throws IOException {
+        counter.exec();
     }
 
 
