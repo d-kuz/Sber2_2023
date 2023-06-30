@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Group page</title>
+  <style>
+    body {background-color: #FFFFFF}
+    a { color:#000000; text-decoration:none;}
+  </style>
+</head>
+<body>
+<form method="GET", action="/groups">
+  <h2 align="center">Choose a group</h2>
+  <table th:if="${not #lists.isEmpty(groups)}">
+    <tr th:each="gr : ${groups}">
+      <td>
+        <a th:href="@{/groups/{grId}/albums/add(grId = ${gr.id})}"><span th:text="${gr.id + 1  + ') ' + gr.name}"></span></a>
+      </td>
+    </tr>
+  </table>
+</form>
+<br>
+<p align="center"><button type="submit" class="btn btn-light"> <a th:href="@{/groups/add}">Add a new group</a></button></p>
+</body>
+</html>
