@@ -1,23 +1,32 @@
 package com.example.controller;
 
-import com.example.Group;
-import com.example.Album;
-import com.example.Track;
+import com.example.model.Group;
+import com.example.model.Album;
+import com.example.model.Track;
 
+import com.example.repository.AlbumRepository;
+import com.example.repository.GroupRepository;
+import com.example.repository.TrackRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+
 @Controller
 public class MusicController {
-    public List<Group> groups = new ArrayList<>();
-    public int namberGroup = 0;
 
-    //Показать все группы
+    @Autowired
+    GroupRepository groupRepository;
+    @Autowired
+    AlbumRepository albumRepository;
+    @Autowired
+    TrackRepository trackRepository;
+
     @GetMapping("/groups")
     public String getGroup(Model model){
-        model.addAttribute("groups", groups);
+        model.addAttribute("groups", groupRepository.findAll());
         return "groups";
     }
     @GetMapping("/groups/add")
@@ -26,78 +35,72 @@ public class MusicController {
     }
     @PostMapping("/groups/add")
     public String createGroup(@RequestParam("name") String name, Model model){
-        Group group = new Group(name, namberGroup);
-        namberGroup++;
+        Group group = new Group(name);
         model.addAttribute("group", group);
-        System.out.println(group.id + "   " + group.name);
-        groups.add(group);
+        System.out.println(group.getId() + "   " + group.getName());
+        groupRepository.save(group);
         return "groupAdd";
     }
 
     @GetMapping("/groups/{idGroup}/albums")
-    public String getAlbum(@PathVariable int idGroup, Model model) {
-        for(Group group: groups){
-            if (group.getId() == idGroup){
-                model.addAttribute("group", group.album);
-                model.addAttribute("album", group.album.get(0));
-            }
-        }
+    public String getAlbum(@PathVariable long idGroup, Model model) {
+        Optional<Group> group = groupRepository.findById(idGroup);
+        System.out.println(group.get().getName());
+        Optional<Album> album = albumRepository.findById(idGroup);
+        System.out.println(album.get().getName());
+        model.addAttribute("group", group.get().getAlbums());
+        model.addAttribute("idGroup", idGroup);
         return "albums";
     }
+
     @GetMapping("/groups/{idGroup}/albums/add")
-    public String crAlbum(@PathVariable int idGroup) {
+    public String crAlbum(@PathVariable long idGroup) {
         return "albumAdd";
     }
     @PostMapping("/groups/{idGroup}/albums/add")
-    public String addAlbum(@PathVariable int idGroup, @RequestParam("name") String name,
-                           @RequestParam("year") String year, Model model) {
-        Album album = new Album(groups.get(idGroup).album.size(), name, year, idGroup);
-        System.out.println(album.id + "   " + album.name + "   " + album.year + "   " + album.tracks);
-        for (Group group:  groups) {
-            if (group.getId() == idGroup){
-                group.album.add(album);
-                model.addAttribute("group", album);
-            }
+    public String addAlbum(@PathVariable long idGroup, @RequestParam("name") String name,
+                           @RequestParam("years") String years, Model model) {
+        Optional<Group> groupOptional = groupRepository.findById(idGroup);
+        System.out.println(name + " " + years);
+        if (groupOptional.isPresent()){
+            Group group = groupOptional.get();
+            Album album = new Album(name, years);
+            group.addAlbum(album);
+            groupRepository.save(group);
         }
         return "albumAdd";
     }
 
-
     @GetMapping("/groups/{idGroup}/albums/{idAlbom}/tracks")
-    public String getTrack(@PathVariable int idGroup, @PathVariable int idAlbom, Model model) {
-        for(Group group:  groups) {
-            if (group.getId() == idGroup){
-                for (Album album: group.album) {
-                    if (album.getId() == idAlbom){
-                        model.addAttribute("group", album.tracks);
-                        model.addAttribute("album", album.tracks.get(0));
-                    }
-                }
-            }
-        }
-
+    public String getTrack(@PathVariable long idGroup, @PathVariable long idAlbom, Model model) {
+        Optional<Group> group = groupRepository.findById(idGroup);
+        System.out.println(group.get().getName());
+        Optional<Album> album = albumRepository.findById(idGroup);
+        System.out.println(album.get().getName());
+        model.addAttribute("group", album.get().getTracks());
+        model.addAttribute("idGroup", idGroup);
+        model.addAttribute("idAlbom", idAlbom);
         return "tracks";
     }
-
     @GetMapping("/groups/{idGroup}/albums/{idAlbom}/tracks/add")
-    public String crTrack(@PathVariable int idGroup, @PathVariable int idAlbom) {
+    public String crTrack(@PathVariable long idGroup, @PathVariable long idAlbom) {
         return "trackAdd";
     }
     @PostMapping("/groups/{idGroup}/albums/{idAlbom}/tracks/add")
-    public String addTrack(@PathVariable int idGroup, @PathVariable int idAlbom,
+    public String addTrack(@PathVariable long idGroup, @PathVariable long idAlbom,
                            @RequestParam("name") String name,
                            @RequestParam("length") String length, Model model) {
-        Track track = new Track(groups.get(idGroup).album.get(idAlbom).tracks.size(), name, length, idGroup, idAlbom);
-        System.out.println(track.id + "   " + track.name + "   " + track.length);
-        for (Group group: groups){
-            if (group.getId() == idGroup){
-                for (Album album: group.album){
-                    if (album.getId() == idAlbom){
-                        album.tracks.add(track);
-                        model.addAttribute("group", track);
-                    }
-                }
-            }
+        Optional<Group> groupOptional = groupRepository.findById(idGroup);
+        Optional<Album> albumOptional = albumRepository.findById(idGroup);
+        System.out.println(name + " " + length);
+        if (groupOptional.isPresent()){
+            Group group = groupOptional.get();
+            Album album = albumOptional.get();
+            Track track = new Track(name, length);
+            album.addTrack(track);
+            group.addAlbum(album);
+            albumRepository.save(album);
+            groupRepository.save(group);
         }
         return "trackAdd";
     }
