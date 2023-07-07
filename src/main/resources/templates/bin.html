@@ -11,7 +11,7 @@
             <span th:if="${file.isDelete() == true}">
             <a th:href="@{/user/file/{fileId}/bin(fileId = ${idFile}, noteId=${note.getId()})}">
                 <span th:text="${file.name}"></span></a>
-                <button type="submit" class="btn btn-light"> <a th:href="@{/user/file/{fileId}/remuve(fileId = ${idFile})">remuve</a></button>
+                <button type="submit" class="btn btn-light"> <a th:href="@{/user/file/{fileId}/remuve(fileId = ${idFile})}">remuve</a></button>
             </span>
         </td>
     </tr>
